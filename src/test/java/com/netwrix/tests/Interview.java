@@ -25,6 +25,10 @@ public class Interview {
     @Test(priority = 1)
     public static void testRegister(){
 
+//        System.out.println("userName = " + userName);
+//
+//        System.out.println("password = " + password);
+
         getDriver().get(ConfigurationReader.getProperty("env"));
 
         String body = "{\n" +
@@ -39,6 +43,9 @@ public class Interview {
                 substring(1, base.registerSuccessMsg.getText().length() - 1);
 
         assertEquals(actualResult, "User created successfully!", "User registration failed !");
+
+        assertEquals(base.responseStatusCode.getText(), "200", "Status code didn't match !");
+
     }
 
 
@@ -57,6 +64,8 @@ public class Interview {
         token = base.getToken(body);
 
         System.out.println("token = " + token);
+
+        assertEquals(base.responseStatusCode.getText(), "200", "Status code didn't match !");
     }
 
 
@@ -78,7 +87,26 @@ public class Interview {
 
 
 
+    @Test(priority = 4)
+    public static void testDeleteRegisteredUser(){
 
+        getDriver().navigate().refresh();
+
+        String body = "{\n" +
+                "  \"username\": \"" + userName + "\"\n" +
+                "}";
+
+        base.deleteUser(body);
+
+        assertEquals(base.responseStatusCode.getText(), "200", "Status code didn't match !");
+
+        String actualResult = base.registerSuccessMsg.getText().
+                substring(1, base.registerSuccessMsg.getText().length() - 1);
+
+        assertEquals(actualResult, "User deleted successfully!");
+
+        assertEquals(base.responseStatusCode.getText(), "200", "Status code didn't match !");
+    }
 
 
 

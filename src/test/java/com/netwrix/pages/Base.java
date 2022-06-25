@@ -56,6 +56,10 @@ public class Base {
     public WebElement responseStatusCode;
 
 
+    @FindBy(xpath = "//div[contains(@id,'Authenticate_delete')]")
+    public WebElement postDelete;
+
+
 
     public String getToken(String body){
 
@@ -94,6 +98,20 @@ public class Base {
         authorizeBtnFinal.click();
 
         closeBtn.click();
+    }
+
+
+    public void deleteUser(String body){
+
+        postDelete.click();
+
+        tryItOut.click();
+
+        bodyParam.clear();
+
+        bodyParam.sendKeys(body);
+
+        execute.click();
     }
 
 
